@@ -1,0 +1,142 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package controllers;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.util.Random;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ *
+ * @author User
+ */
+public class RandomServlet extends HttpServlet {
+    //Database Connection  
+    private Connection connection ;
+    
+    /**
+     * Processes requests for both HTTP
+     * <code>GET</code> and
+     * <code>POST</code> methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet RandomServlet</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet RandomServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        } finally {
+            out.close();
+        }
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP
+     * <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        try {
+            out.println("<html>");
+            out.println("<head>");
+            out.println("</head>");
+            out.println("<body>");
+            String maxRandomValue = getServletContext().getInitParameter("AppMaxRandom");
+            int max = Integer.parseInt(maxRandomValue);
+
+            Random random = new Random();
+            int aValue = random.nextInt(max) + 1;
+            out.println("<h2>(Parameter of Context) Random a value between 1 - " + maxRandomValue
+                    + "=>" + aValue + "</h2>");
+
+            String maxRandomValueServlet = getServletConfig().getInitParameter("max");
+            max = Integer.parseInt(maxRandomValueServlet);
+            aValue = random.nextInt(max) + 1;
+            out.println("<h2>(Parameter of Servlet Config) Random a value between 1 - " + maxRandomValueServlet
+                    + "=>" + aValue +"</h2>");
+            
+            out.println("</body>");
+            out.println("</html>");
+
+        } finally {
+            out.close();
+        }
+
+
+
+    }
+
+    /**
+     * Handles the HTTP
+     * <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        int max = Integer.parseInt(config.getInitParameter("max"));
+        //Code for connecting to database server 
+        //and opening database connection
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        //code for disconnecting from database server 
+        //and closing database connection.
+    }
+    
+    
+    
+}
